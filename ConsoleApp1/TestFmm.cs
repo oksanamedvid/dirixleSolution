@@ -40,20 +40,34 @@ namespace ConsoleApp1
         }
 
 
-        public void CompareResults()
+        public List<double[]> CompareResults()
         {
             Console.WriteLine();
             Console.WriteLine("Actual Result");
+
             var actualSolution = ActualSolution();
             var expectedSolution = ExpectedSolution();
 
+            var results = new List<double[]>();
+            var expectedResults = new double[expectedSolution.Count];
+            var actualResults = new double[actualSolution.Count];
+
+            var i = 0;
             foreach (var solution in actualSolution)
             {
                 var expectedSol = expectedSolution.FirstOrDefault(e => Math.Abs(e.Key.X - solution.Key.X) < 0.0001 && Math.Abs(e.Key.Y - solution.Key.Y) < 0.0001);
 
+                expectedResults[i] = expectedSol.Value;
+                actualResults[i] = solution.Value;
+                i++;
+
+
                 Console.WriteLine($"{solution.Key.X} {solution.Key.Y} {expectedSol.Key.X} {expectedSol.Key.Y}  {solution.Value} {expectedSol.Value}");
             }
 
+            results.Add(expectedResults);
+            results.Add(actualResults);
+            return results;
             //Console.WriteLine("Expected Result");
             //var expectedSolution = ExpectedSolution();
             //foreach (var solution in expectedSolution)
